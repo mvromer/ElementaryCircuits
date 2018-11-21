@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/CircuitFindingLib/CircuitFindingLib.iml" filepath="$PROJECT_DIR$/CircuitFindingLib/CircuitFindingLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CircuitFindingTest/CircuitFindingTest.iml" filepath="$PROJECT_DIR$/CircuitFindingTest/CircuitFindingTest.iml" />
+    </modules>
+  </component>
+</project>
