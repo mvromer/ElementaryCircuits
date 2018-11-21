@@ -3,29 +3,29 @@ package com.elementarycircuits.lib;
 import java.util.*;
 
 // Based on pseudocode from wikipedia: https://en.wikipedia.org/wiki/Tarjan%27s_strongly_connected_components_algorithm
-public class SCC {
+public class SCC<T> {
     private int nextNodeIndex = 0;
-    private Map<Node, Integer> nodeIndices = new HashMap<>();
-    private Map<Node, Integer> nodeLowLinks = new HashMap<>();
-    private Map<Node, Boolean> nodeOnStack = new HashMap<>();
-    private Deque<Node> S = new ArrayDeque<>();
+    private Map<Node<T>, Integer> nodeIndices = new HashMap<>();
+    private Map<Node<T>, Integer> nodeLowLinks = new HashMap<>();
+    private Map<Node<T>, Boolean> nodeOnStack = new HashMap<>();
+    private Deque<Node<T>> S = new ArrayDeque<>();
 
-    public static Set<Set<Node>> findStronglyConnectedComponents( DirectedGraph g ) {
-        return findStronglyConnectedComponentsFromLeastNode( g, Node.fromId( Node.MIN_ID ) );
+    public static <T> Set<Set<Node<T>>> findStronglyConnectedComponents( DirectedGraph<T> g ) {
+        return findStronglyConnectedComponentsFromLeastNode( g, Node.create( Node.MIN_ID, null ) );
     }
 
-    public static Set<Set<Node>> findStronglyConnectedComponentsFromLeastNode( DirectedGraph g, Node leastNode ) {
-        SCC scc = new SCC();
+    public static <T> Set<Set<Node<T>>> findStronglyConnectedComponentsFromLeastNode( DirectedGraph<T> g, Node<T> leastNode ) {
+        SCC<T> scc = new SCC<>();
         return scc.findStronglyConnectedComponentsFromLeastNodeInner( g, leastNode );
     }
 
     private SCC() {
     }
 
-    private Set<Set<Node>> findStronglyConnectedComponentsFromLeastNodeInner( DirectedGraph g, Node leastNode ) {
-        Set<Set<Node>> sccs = new HashSet<>();
+    private Set<Set<Node<T>>> findStronglyConnectedComponentsFromLeastNodeInner( DirectedGraph<T> g, Node<T> leastNode ) {
+        Set<Set<Node<T>>> sccs = new HashSet<>();
 
-        for( Node v : g.getNodes() ) {
+        for( Node<T> v : g.getNodes() ) {
             if( v.getId() < leastNode.getId() )
                 continue;
 
@@ -37,7 +37,7 @@ public class SCC {
         return sccs;
     }
 
-    private void stronglyConnectFromLeastNode( Node v, DirectedGraph g, Node leastNode, Set<Set<Node>> sccs ) {
+    private void stronglyConnectFromLeastNode( Node<T> v, DirectedGraph<T> g, Node<T> leastNode, Set<Set<Node<T>>> sccs ) {
         nodeIndices.put( v, nextNodeIndex );
         nodeLowLinks.put( v, nextNodeIndex );
         ++nextNodeIndex;
@@ -45,7 +45,7 @@ public class SCC {
         S.push( v );
         nodeOnStack.put( v, true );
 
-        for( Node w : g.getSuccessorsForNode( v ) ) {
+        for( Node<T> w : g.getSuccessorsForNode( v ) ) {
             if( w.getId() < leastNode.getId() )
                 continue;
 
@@ -59,8 +59,8 @@ public class SCC {
         }
 
         if( nodeLowLinks.get( v ) == nodeIndices.get( v ) ) {
-            Set<Node> scc = new HashSet<>();
-            Node w;
+            Set<Node<T>> scc = new HashSet<>();
+            Node<T> w;
 
             do {
                 w = S.pop();

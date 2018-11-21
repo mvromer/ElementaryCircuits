@@ -2,22 +2,18 @@ package com.elementarycircuits.lib;
 
 import java.util.Objects;
 
-public class Node {
+public class Node<T> {
     public static final int MIN_ID = 1;
-    private static int nextId = MIN_ID;
     private int id;
+    private T data;
 
-    public Node() {
-        this.id = nextId;
-        ++nextId;
+    public static <T> Node<T> create( int id, T data ) {
+        return new Node<>( id, data );
     }
 
-    public static Node fromId( int id ) {
-        return new Node( id );
-    }
-
-    private Node( int id ) {
+    private Node( int id, T data ) {
         this.id = id;
+        this.data = data;
     }
 
     public int getId() {
@@ -28,7 +24,7 @@ public class Node {
     public boolean equals( Object o ) {
         if( this == o ) return true;
         if( o == null || getClass() != o.getClass() ) return false;
-        Node node = (Node) o;
+        Node<?> node = (Node<?>) o;
         return id == node.id;
     }
 

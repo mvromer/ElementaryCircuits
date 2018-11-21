@@ -6,7 +6,6 @@ import com.elementarycircuits.lib.Node;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -14,66 +13,66 @@ import java.util.Set;
 public class CircuitFinderTest {
     @Test
     public void t1() {
-        DirectedGraph g = new DirectedGraph();
-        Node n1 = new Node();
-        Node n2 = new Node();
-        Node n3 = new Node();
+        DirectedGraph<Integer> g = new DirectedGraph<>();
+        g.addEdge( 1, 2 );
+        g.addEdge( 2, 1 );
+        g.addEdge( 2, 3 );
 
-        g.addEdge( n1, n2 );
-        g.addEdge( n2, n1 );
-        g.addEdge( n2, n3 );
+        Node<Integer> n1 = g.getNodeFromT( 1 );
+        Node<Integer> n2 = g.getNodeFromT( 2 );
+        Node<Integer> n3 = g.getNodeFromT( 3 );
 
-        Set<List<Node>> circuits = CircuitFinder.findCircuits( g );
 
-        for( List<Node> circuit : circuits ) {
+        Set<List<Node<Integer>>> circuits = CircuitFinder.findCircuits( g );
+
+        for( List<Node<Integer>> circuit : circuits ) {
             System.out.print( "Circuit: " );
-            for( Node v : circuit ) {
+            for( Node<Integer> v : circuit ) {
                 System.out.print( v.getId() + " " );
             }
         }
 
-        List<Node> c1 = Arrays.asList( n1, n2, n1 );
+        List<Node<Integer>> c1 = Arrays.asList( n1, n2, n1 );
         Assertions.assertTrue( circuits.contains( c1 ) );
     }
 
     @Test
     public void t2() {
-        DirectedGraph g = new DirectedGraph();
-        Node n1 = new Node();
-        Node n2 = new Node();
-        Node n3 = new Node();
-        Node n4 = new Node();
-        Node n5 = new Node();
-        Node n6 = new Node();
-        Node n7 = new Node();
-        Node n8 = new Node();
+        // Test case pulled from wikipedia article on Tarjan's strongly connected components algorithm.
+        DirectedGraph<Integer> g = new DirectedGraph<>();
 
-        g.addEdge( n1, n2 );
-        g.addEdge( n2, n3 );
-        g.addEdge( n3, n1 );
-        g.addEdge( n4, n2 );
-        g.addEdge( n4, n3 );
-        g.addEdge( n4, n5 );
-        g.addEdge( n5, n4 );
-        g.addEdge( n5, n6 );
-        g.addEdge( n6, n3 );
-        g.addEdge( n6, n7 );
-        g.addEdge( n7, n6 );
-        g.addEdge( n8, n7 );
-        g.addEdge( n8, n5 );
-        g.addEdge( n8, n8 );
+        g.addEdge( 1, 2 );
+        g.addEdge( 2, 3 );
+        g.addEdge( 3, 1 );
+        g.addEdge( 4, 2 );
+        g.addEdge( 4, 3 );
+        g.addEdge( 4, 5 );
+        g.addEdge( 5, 4 );
+        g.addEdge( 5, 6 );
+        g.addEdge( 6, 3 );
+        g.addEdge( 6, 7 );
+        g.addEdge( 7, 6 );
+        g.addEdge( 8, 7 );
+        g.addEdge( 8, 5 );
+        g.addEdge( 8, 8 );
 
-        Set<List<Node>> circuits = CircuitFinder.findCircuits( g );
+        Node<Integer> n1 = g.getNodeFromT( 1 );
+        Node<Integer> n2 = g.getNodeFromT( 2 );
+        Node<Integer> n3 = g.getNodeFromT( 3 );
+        Node<Integer> n4 = g.getNodeFromT( 4 );
+        Node<Integer> n5 = g.getNodeFromT( 5 );
+        Node<Integer> n6 = g.getNodeFromT( 6 );
+        Node<Integer> n7 = g.getNodeFromT( 7 );
+        Node<Integer> n8 = g.getNodeFromT( 8 );
 
-        for( List<Node> circuit : circuits ) {
+        Set<List<Node<Integer>>> circuits = CircuitFinder.findCircuits( g );
+
+        for( List<Node<Integer>> circuit : circuits ) {
             System.out.print( "Circuit: " );
-            for( Node v : circuit ) {
+            for( Node<Integer> v : circuit ) {
                 System.out.print( v.getId() + " " );
             }
             System.out.println();
         }
-
-        //List<Node> c1 = Arrays.asList( n1, n2, n1 );
-        //Assertions.assertTrue( circuits.contains( c1 ) );
     }
 }
