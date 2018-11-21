@@ -8,7 +8,7 @@ public class DirectedGraph<T> {
     // Checks to see if a previous T has been already wrapped as a Node that we can reuse.
     private Map<T, Node<T>> dataToNodes = new HashMap<>();
 
-    // This is just provide fast lookup for dataToNodes by ID.
+    // This is just provide fast lookup for finding a node by ID.
     private Map<Integer, Node<T>> idToNodes = new HashMap<>();
 
     private Set<Node<T>> nodes = new HashSet<>();

@@ -3,6 +3,12 @@ package com.elementarycircuits.lib;
 import java.util.*;
 import java.util.stream.Collectors;
 
+// Based on Donald Johnson's algorithm described in the following paper:
+// Finding All the Elementary Circuits of a Directed Graph
+// Donald B. Johnson
+// SIAM Journal on Computing 1975 4:1, 77-84
+// https://doi.org/10.1137/0204007
+//
 public class CircuitFinder<T> {
     private Map<Node<T>, Boolean> blocked = new HashMap<>();
     private Map<Node<T>, Set<Node<T>>> B = new HashMap<>();
