@@ -3,12 +3,21 @@ package com.elementarycircuits.lib;
 import java.util.Objects;
 
 public class Node {
-    private static int nextId = 1;
+    public static final int MIN_ID = 1;
+    private static int nextId = MIN_ID;
     private int id;
 
     public Node() {
         this.id = nextId;
         ++nextId;
+    }
+
+    public static Node fromId( int id ) {
+        return new Node( id );
+    }
+
+    private Node( int id ) {
+        this.id = id;
     }
 
     public int getId() {
