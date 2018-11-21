@@ -30,6 +30,7 @@ public class CircuitFinderTest {
             for( Node<Integer> v : circuit ) {
                 System.out.print( v.getId() + " " );
             }
+            System.out.println();
         }
 
         List<Node<Integer>> c1 = Arrays.asList( n1, n2, n1 );
