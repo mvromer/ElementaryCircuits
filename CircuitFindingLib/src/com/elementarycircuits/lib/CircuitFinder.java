@@ -15,14 +15,18 @@ public class CircuitFinder<T> {
     private Deque<Node<T>> stack = new ArrayDeque<>();
 
     public static <T> Set<List<Node<T>>> findCircuits( DirectedGraph<T> g ) {
+        return findCircuitsOfMaxSize( g, Integer.MAX_VALUE );
+    }
+
+    public static <T> Set<List<Node<T>>> findCircuitsOfMaxSize( DirectedGraph<T> g , int maxSize ) {
         CircuitFinder<T> finder = new CircuitFinder<>();
-        return finder.findCircuitsInner( g );
+        return finder.findCircuitsInner( g, maxSize );
     }
 
     private CircuitFinder() {
     }
 
-    private Set<List<Node<T>>> findCircuitsInner( DirectedGraph<T> g ) {
+    private Set<List<Node<T>>> findCircuitsInner( DirectedGraph<T> g, int maxSize ) {
         int s = 1;
         Set<Node<T>> nodes = g.getNodes();
         Set<List<Node<T>>> circuits = new HashSet<>();
@@ -44,7 +48,7 @@ public class CircuitFinder<T> {
                     B.get( i ).clear();
                 }
 
-                circuit( g.getNodeFromId( s ), s, AK, circuits );
+                circuit( g.getNodeFromId( s ), s, maxSize, AK, circuits );
                 s++;
             }
             else {
@@ -55,7 +59,7 @@ public class CircuitFinder<T> {
         return circuits;
     }
 
-    private boolean circuit( Node<T> v, int s, Map<Node<T>, Set<Node<T>>> AK, Set<List<Node<T>>> circuits ) {
+    private boolean circuit( Node<T> v, int s, int maxSize, Map<Node<T>, Set<Node<T>>> AK, Set<List<Node<T>>> circuits ) {
         boolean f = false;
         stack.push( v );
         blocked.put( v, true );
@@ -74,8 +78,16 @@ public class CircuitFinder<T> {
                 circuits.add( result );
                 f = true;
             }
-            else if( !blocked.get( w ) && circuit( w, s, AK, circuits ) )
+            else if( stack.size() == maxSize ) {
+                // We set f to true because if we break out because of cycle size restrictions, we don't want the
+                // nodes we've already seen to remain blocked. It's possible they could be used in an alternate
+                // path that yields a cycle.
                 f = true;
+                break;
+            }
+            else if( !blocked.get( w ) && circuit( w, s, maxSize, AK, circuits ) ) {
+                f = true;
+            }
         }
 
         if( f ) {
