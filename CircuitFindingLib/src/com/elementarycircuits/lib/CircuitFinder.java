@@ -103,7 +103,7 @@ public class CircuitFinder<T> {
         }
     }
 
-    private LeastScc getLeastScc( DirectedGraph<T> g, int s ) {
+    private LeastScc<T> getLeastScc( DirectedGraph<T> g, int s ) {
         Set<Set<Node<T>>> sccs = SCC.findStronglyConnectedComponentsFromLeastNode( g, g.getNodeFromId( s ) );
 
         // NOTE: Exclude trivial strong component. Johnson's algorithm basically excludes loops (i.e., edges of the
@@ -126,7 +126,7 @@ public class CircuitFinder<T> {
         // Java 8 lambdas complain if a local variable captured by the lambda isn't final or effectively final. So we
         // have to play games to make our leastScc set available in the filter below.
         final Set<Node<T>> leastSccFinal = leastScc;
-        LeastScc result = null;
+        LeastScc<T> result = null;
 
         if( leastScc != null ) {
             Map<Node<T>, Set<Node<T>>> successors = new HashMap<>();
@@ -137,7 +137,7 @@ public class CircuitFinder<T> {
                         .collect( Collectors.toSet() ) );
             }
 
-            result = new LeastScc<T>( successors, leastId );
+            result = new LeastScc<>( successors, leastId );
         }
 
         return result;
